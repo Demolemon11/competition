@@ -18,7 +18,7 @@ impl Pattern {
                 paper.append(&mut item.paper); //收集所有学校的论文, 使用append方法扩充新的paper这个vector
             })
             .collect::<Vec<_>>();
-        let _ = (0..num)
+        let _ = (0..=num)
             .into_iter()
             .map(|_| {
                 reviewer.push(
