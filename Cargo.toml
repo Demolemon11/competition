@@ -8,6 +8,5 @@ edition = "2021"
 [dependencies]
 rand = "*"
 once_cell = "*"
-clap = { version = "*", features = ["derive"] }
 [profile.release]
 strip = true

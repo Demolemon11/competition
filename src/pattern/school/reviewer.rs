@@ -1,4 +1,5 @@
 use rand::{thread_rng, Rng};
+#[derive(Clone)]
 pub struct Reviewer(pub String);
 use crate::pattern::Inspect;
 
@@ -15,7 +16,7 @@ impl Default for Reviewer {
 }
 impl PushName for Reviewer {
     fn push_name(self, name: &str) -> Self {
-        Self(format!("{}_{}", name, self.0))
+        Self(format!("{}_{}", name, self.0)) //同理, 见paper.rs的push_name函数
     }
 }
 impl Inspect for Reviewer {

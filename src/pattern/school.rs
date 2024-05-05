@@ -1,19 +1,17 @@
 use super::Inspect;
-use once_cell::sync::Lazy;
 use paper::Paper;
 use rand::{thread_rng, Rng};
 use reviewer::Reviewer;
 pub mod paper;
-pub mod reviewer;
+pub mod reviewer; //引一些库和模块
 trait PushName {
     fn push_name(self, name: &str) -> Self;
 }
-static RATIO: once_cell::sync::Lazy<f32> = Lazy::new(|| thread_rng().gen_range(0.1..0.16));
 pub struct School {
     //一个学校
     pub name: String,
-    pub paper: Vec<Paper>, //vec里装了很多论文, 同理, 这些论文也是同一所学校的
-    pub reviewer: Vec<Reviewer>, //vec里装了很多评委, 这些评委是同一所学校的
+    pub paper: Vec<Paper>,  //vec里装了很多论文, 同理, 这些论文也是同一所学校的
+    pub reviewer: Reviewer, //vec里装了很多评委, 这些评委是同一所学校的
 }
 impl Default for School {
     fn default() -> Self {
@@ -29,21 +27,12 @@ impl Default for School {
             .map(|_| paper.push(Paper::default().push_name(&name)))
             .collect::<Vec<_>>(); //同理, 生成论文
 
-        let reviewer = vec![Reviewer("None".to_string())];
+        let reviewer = Reviewer::default().push_name(&name);
         Self {
             name,
             reviewer,
             paper,
         } //组合成结构体返回
-    }
-}
-impl School {
-    pub fn fix(&mut self) {
-        let mut reviewer = Vec::new();
-        let _ = (0..(self.paper.len() as f32 * Lazy::force(&RATIO)) as u32)
-            .map(|_| reviewer.push(Reviewer::default().push_name(&self.name)))
-            .collect::<Vec<_>>();
-        self.reviewer = reviewer
     }
 }
 impl Inspect for School {
@@ -53,17 +42,13 @@ impl Inspect for School {
             .iter()
             .inspect(|item| item.inspector())
             .collect::<Vec<_>>();
+        //检查论文(打印出来)
 
-        let _ = self
-            .reviewer
-            .iter()
-            .inspect(|item| item.inspector())
-            .collect::<Vec<_>>();
         println!(
-            "此学校校名:{}, 论文数量:{}, 评委数量:{}\n------------学校分界线------------",
+            "此学校校名:{}, 论文数量:{}, 评委:{}\n------------学校分界线------------",
             self.name,
             self.paper.len(),
-            self.reviewer.len()
+            self.reviewer.0 //总结此学校
         )
     }
 }
