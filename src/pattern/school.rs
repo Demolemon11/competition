@@ -44,7 +44,7 @@ impl Default for School {
             reviewer,
             paper,
         }
-        //组合成结构体返回, process.rs会用到
+        //组合成结构体返回
     }
 }
 impl Inspect for School {

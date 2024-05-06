@@ -14,7 +14,7 @@ impl Pattern {
         //num表示能参评的评委数量, 学校总数即是预选评委总数, 但是只有一部分评委能参评,这是能参评的(有效评委数).
 
         let mut reviewer = Vec::with_capacity(num);
-        //一个Vector, 准备装能参评的评委(有效评委).
+        //一个Vector, 准备装有效评委.
 
         let _ = &self.school[..].shuffle(&mut thread_rng());
         //用shuffle方法随机打乱school这个Vector里元素的索引顺序, 达到洗牌学校的目的, 保证随机性.
@@ -26,10 +26,10 @@ impl Pattern {
                 paper.append(&mut item.paper);
             })
             .collect::<Vec<_>>();
-        //收集所有学校的论文,使用append方法对上述Vector扩展.
+        //收集所有学校的论文,使用append方法对上边paper(Vector类型)进行扩展.
 
         let mut count = 0;
-        //一个可变的计数器, 用于抽取前num个学校
+        //一个可变的计数器, 用于抽取前几个学校
 
         let _ = (0..num)
             .into_iter()
@@ -37,12 +37,12 @@ impl Pattern {
                 reviewer.push(self.school[count].reviewer.clone());
                 count += 1;
             })
-            //前边已经洗牌过学校了, 这里直接取前num个学校的评委, 不会破坏随机性
+            //把前num个学校的评委装到上边声明的reviewer(Vector类型)里, 因为前边已经洗牌过学校了, 所以不会破坏随机性
             .collect::<Vec<_>>();
-        //每次循环都随机地插入一个学校的评委到上述的Vector里, 一共循环num次, 也就是选出来了num个评委(有效评委).
+        //执行...
 
         let mut map = BTreeMap::new();
-        //一个新的BTreeMap, 以便后续插入论文和评委
+        //声明一个BTreeMap, 以便后续插入论文和评委
 
         let _ = (0..paper.len())
             .map(|_| loop {
