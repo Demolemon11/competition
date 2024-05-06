@@ -12,7 +12,6 @@ fn main() {
     let _ = pattern
         .school
         .iter()
-        //Iterator是迭代器, 类似for循环
         .map(|item| item.inspector())
         //对于每个学校, 调用inspector函数, 检查他们(学校)
         .collect::<Vec<_>>();
