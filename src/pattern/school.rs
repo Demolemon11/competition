@@ -25,7 +25,7 @@ impl Default for School {
             .map(|_| name.push(thread_rng().gen_range(65..=90) as u8 as char))
             //65到90的ascii码刚好是大写字母.
             .collect::<Vec<_>>();
-        //产生学校名: 一个由两个大写字母组成的字符串.
+        //产生学校名: 一个由两个随机的大写字母组成的字符串.
 
         let paper_num = thread_rng().gen_range(50..=80);
         //随机学校内论文数量: 50到80
@@ -37,6 +37,8 @@ impl Default for School {
         //一个循环, 用于生成本校论文, paper_num的值是多少, 就循环多少次.
 
         let reviewer = Reviewer::default().push_name(&name);
+        //为此学校生成评委.
+
         Self {
             name,
             reviewer,
