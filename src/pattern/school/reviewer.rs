@@ -10,17 +10,19 @@ impl Default for Reviewer {
     fn default() -> Self {
         Self(
             vec!['A'; 3]
+                //一个3长度的vector.
                 .into_iter()
                 .map(|_| thread_rng().gen_range(65..=90) as u8 as char)
+                //65到90对应的ascii码刚好是大写字母.
                 .collect(),
             //随机产生一个评委名字: 3个大写字母
         )
     }
 }
 impl PushName for Reviewer {
+    //同理, 见paper.rs
     fn push_name(self, name: &str) -> Self {
         Self(format!("{}_{}", name, self.0))
-        //同理, 见paper.rs的push_name函数
     }
 }
 impl Inspect for Reviewer {

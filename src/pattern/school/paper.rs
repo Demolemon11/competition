@@ -9,10 +9,10 @@ impl Default for Paper {
     fn default() -> Self {
         Self(
             vec!['a'; 5]
-                //一个5个长度的vector, 97到122的ascii码刚好是英文的小写字母
+                //一个5个长度的vector.
                 .into_iter()
                 .map(|_| thread_rng().gen_range(97..=122) as u8 as char)
-                //97到122的ascii码刚好是英文的小写字母
+                //97到122的ascii码是小写字母.
                 .collect(),
             //随机产生一篇论文编号: 5个小写字母
         )

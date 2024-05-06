@@ -3,7 +3,7 @@ use once_cell::sync::Lazy;
 use rand::{seq::SliceRandom, thread_rng, Rng};
 use std::collections::BTreeMap;
 static RATIO: once_cell::sync::Lazy<f32> = Lazy::new(|| thread_rng().gen_range(0.7..0.8));
-//定义一个静态的0..1的浮点
+//定义一个静态的0.7到0.8的浮点
 
 impl Pattern {
     pub fn processor(&mut self) {
@@ -11,7 +11,7 @@ impl Pattern {
         //一个Vector, 准备装所有学校的论文.
 
         let num = (self.school.len() as f32 * Lazy::force(&RATIO)) as usize;
-        //num表示能参评的评委数量, 学校总数即是预选评委总数, 但是只有一部分评委能参评, 遂随机生成一个0..1的小数, 评委总数乘以这个小数, 得到实际参评的评委
+        //num表示能参评的评委数量, 学校总数即是预选评委总数, 但是只有一部分评委能参评,这是能参评的(有效评委数).
 
         let mut reviewer = Vec::with_capacity(num);
         //一个Vector, 准备装能参评的评委(有效评委).
@@ -29,17 +29,19 @@ impl Pattern {
         //收集所有学校的论文,使用append方法对上述Vector扩展.
 
         let mut count = 0;
+        //一个可变的计数器, 用于抽取前num个学校
         let _ = (0..num)
             .into_iter()
             .map(|_| {
                 reviewer.push(self.school[count].reviewer.clone());
                 count += 1;
             })
+            //前边已经洗牌过学校了, 这里直接取前num个学校的评委, 不会破坏随机性
             .collect::<Vec<_>>();
         //每次循环都随机地插入一个学校的评委到上述的Vector里, 一共循环num次, 也就是选出来了num个评委(有效评委).
 
         let mut map = BTreeMap::new();
-        //新弄一个BTreeMap, 以便后续插入论文和评委
+        //一个新的BTreeMap, 以便后续插入论文和评委
 
         let _ = (0..paper.len())
             .map(|_| loop {
@@ -68,7 +70,7 @@ impl Pattern {
             self.school.len(),
             num
         );
-        //最后的一些简短的统计
+        //简短的统计
 
         let _ = map
             .iter()

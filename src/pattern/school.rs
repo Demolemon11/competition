@@ -8,11 +8,12 @@ trait PushName {
     fn push_name(self, name: &str) -> Self;
 }
 pub struct School
-//学校的类型--结构体, 有三个字段, 名字: 字符串; 论文:Vec<Paper>; 评委: Vec<Reviewer>
+//学校的类型: 有三个字段的结构体.
 {
     pub name: String,
+    //学校名字: 字符串
     pub paper: Vec<Paper>,
-    //Vector里装的本校的论文.
+    //本校的论文: 用Vector装起来.
     pub reviewer: Reviewer,
     //本校的评委.
 }
@@ -22,8 +23,9 @@ impl Default for School {
         let _ = (0..2)
             .into_iter()
             .map(|_| name.push(thread_rng().gen_range(65..=90) as u8 as char))
+            //65到90的ascii码刚好是大写字母.
             .collect::<Vec<_>>();
-        //产生学校名--一个由两个大写字母组成的字符串, 65到90的ascii码刚好是大写字母.
+        //产生学校名: 一个由两个大写字母组成的字符串.
 
         let paper_num = thread_rng().gen_range(50..=80);
         //随机学校内论文数量: 50到80
