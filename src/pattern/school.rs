@@ -1,17 +1,20 @@
+mod paper;
+mod reviewer;
 use super::Inspect;
 use paper::Paper;
 use rand::{thread_rng, Rng};
 use reviewer::Reviewer;
-pub mod paper;
-pub mod reviewer; //引一些库和模块
 trait PushName {
     fn push_name(self, name: &str) -> Self;
 }
-pub struct School {
-    //一个学校
+pub struct School
+//学校的类型--结构体, 有三个字段, 名字: 字符串; 论文:Vec<Paper>; 评委: Vec<Reviewer>
+{
     pub name: String,
-    pub paper: Vec<Paper>,  //vec里装了很多论文, 同理, 这些论文也是同一所学校的
-    pub reviewer: Reviewer, //vec里装了很多评委, 这些评委是同一所学校的
+    pub paper: Vec<Paper>,
+    //Vector里装的本校的论文.
+    pub reviewer: Reviewer,
+    //本校的评委.
 }
 impl Default for School {
     fn default() -> Self {
@@ -19,20 +22,25 @@ impl Default for School {
         let _ = (0..2)
             .into_iter()
             .map(|_| name.push(thread_rng().gen_range(65..=90) as u8 as char))
-            .collect::<Vec<_>>(); //随机产生由两个大写字母组成的学校名称
+            .collect::<Vec<_>>();
+        //产生学校名--一个由两个大写字母组成的字符串, 65到90的ascii码刚好是大写字母.
 
-        let paper_num = thread_rng().gen_range(50..=80); //随机学校内论文数量: 50到80
+        let paper_num = thread_rng().gen_range(50..=80);
+        //随机学校内论文数量: 50到80
+
         let mut paper = Vec::with_capacity(paper_num);
         let _ = (0..paper_num)
             .map(|_| paper.push(Paper::default().push_name(&name)))
-            .collect::<Vec<_>>(); //同理, 生成论文
+            .collect::<Vec<_>>();
+        //一个循环, 用于生成本校论文, paper_num的值是多少, 就循环多少次.
 
         let reviewer = Reviewer::default().push_name(&name);
         Self {
             name,
             reviewer,
             paper,
-        } //组合成结构体返回
+        }
+        //组合成结构体返回, process.rs会用到
     }
 }
 impl Inspect for School {
@@ -48,7 +56,9 @@ impl Inspect for School {
             "此学校校名:{}, 论文数量:{}, 评委:{}\n------------学校分界线------------",
             self.name,
             self.paper.len(),
-            self.reviewer.0 //总结此学校
+            self.reviewer.0
         )
+
+        //总结此学校
     }
 }

@@ -1,9 +1,9 @@
-use rand::{thread_rng, Rng};
 mod process;
+mod school;
 use self::school::School;
-pub mod school;
+use rand::{thread_rng, Rng};
 pub struct Pattern {
-    pub school: Vec<School>, //vec里装了很多学校
+    pub school: Vec<School>, //vec里是所有参加比赛的学校
 }
 pub trait Inspect {
     fn inspector(&self);
@@ -18,5 +18,6 @@ impl Default for Pattern {
             })
             .collect::<Vec<_>>(); //产生学校,school.rs模块里为它实现了default特质
         Self { school }
+        //返回模型, 后续processor函数会用到.
     }
 }
