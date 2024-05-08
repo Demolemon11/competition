@@ -39,6 +39,7 @@ impl Pattern {
 
         let mut full_paper = Vec::new();
         //一个Vector, 准备装所有学校的试卷.
+
         let mut full_reviewer = Vec::new();
         //一个Vector, 准备装所有学校的评委(有的不能参选, 这里先装进去, 下边会处理).
 
@@ -49,7 +50,6 @@ impl Pattern {
                 full_reviewer.append(&mut item.reviewer);
             })
             .collect::<Vec<_>>();
-
         //循环, 用于装试卷和论文.
 
         let mut sel_rev = Vec::with_capacity(m);
@@ -63,8 +63,8 @@ impl Pattern {
             }
         }
         //一个能跳出的死循环,
-        //每次循环, 使用shuffle方法打乱full_reviewer这个Vector的顺序,看看前两个评委是不是来自同一个学校,
-        //是, 就插入这俩评委到sel_rev这个Vetor, 循环结束;
+        //每次循环, 使用shuffle方法打乱full_reviewer这个Vector的顺序, 看看前两个评委是不是来自同一个学校,
+        //是, 就插入这俩评委到sel_rev这个Vetor, 跳出循环;
         //不是, 就在再洗牌,
         //一直迭代, 直到选出两个不同学校的评委.
 
@@ -89,8 +89,8 @@ impl Pattern {
         //这里利用map类型的key值会覆盖, 不会重复的特性,
         //把评委前两个字母, 也就是学校名字, 插入到map里,
         //如果map长度是x, 那这些评委就来自x个学校,
-        //p的范围, 也就是1到map的长度.
-        //这样做能保证每份试卷不会出现要求a个评委改, 选出来却只有不到a个非本校评委.
+        //p的范围, 也就是1到map长度.
+        //这样做目的是保证每份试卷不会出现要求a个评委改, 选出来却只有不到a个非本校评委.
 
         println!("========\n||每份试卷由{p}位评委审评||\n========");
         //打印检查一下
@@ -101,6 +101,7 @@ impl Pattern {
         let _ = (0..full_paper.len())
             .map(|_| {
                 let r1 = thread_rng().gen_range(0..full_paper.len());
+
                 loop {
                     let mut vec = Vec::with_capacity(p);
                     let _ = (0..p)
@@ -113,6 +114,7 @@ impl Pattern {
                             }
                         })
                         .collect::<Vec<_>>();
+
                     let mut vec1 = Vec::new();
                     let _ = (0..p)
                         .map(|i| {
@@ -144,6 +146,7 @@ impl Pattern {
         //都不一样就证明这次上边的小loop是有效的, 插入vec和paper到map里, 删除r1这个索引对应的元素(上边说了, 每次都重新计算full_paper的长度), 跳出大loop,
         //有一样的认为此次小loop无效, 重新开始大loop,
         //这样, 通过改变程序的鲁棒性, 我们保证了回避原则和公平性.
+
         Self(map)
         //返回, 用于检查
     }

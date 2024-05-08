@@ -22,6 +22,7 @@ impl PushName for Paper {
     //在论文的5个小写字母前边加上学校, 后续会检验论文和评委前两个字母是否相同, 以此达到回避原则
     fn push_name(self, name: &str) -> Self {
         Self(format!("{}_{}", name, self.0))
+        //format这个用于宏格式化.
     }
 }
 impl Inspect for Paper {
