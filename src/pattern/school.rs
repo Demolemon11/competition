@@ -16,9 +16,9 @@ pub struct School
     //学校名字: 字符串
     pub paper: Vec<Paper>,
     //本校的试卷: Paper类型, 用Vector装起来.
-    pub reviewer: Vec<Reviewer>,
-    //本校的预选评委: Reviewer类型, 用Vector装起来.
-    //但能参选多少, 全靠随机.
+    pub reviewer: Reviewer,
+    //本校的预选评委.
+    //不一定能参选.
 }
 impl Default for School {
     fn default() -> Self {
@@ -42,12 +42,7 @@ impl Default for School {
             .collect::<Vec<_>>();
         //循环, 用于生成本校试卷, 循环paper_num次.
 
-        let reviewer_num = (paper_num as f32 * thread_rng().gen_range(0.1..0.12)) as usize;
-        //本校评委数: 基于本校试卷数, 试卷数越多, 预选评委就越多.
-        let mut reviewer = Vec::with_capacity(reviewer_num);
-        let _ = (0..reviewer_num)
-            .map(|_| reviewer.push(Reviewer::default().push_name(&name)))
-            .collect::<Vec<_>>();
+        let reviewer = Reviewer::default().push_name(&name);
         //循环, 用于生成本校评委, 循环reviewer_num次.
 
         Self {
@@ -66,17 +61,12 @@ impl Inspect for School {
             .inspect(|item| item.inspector())
             .collect::<Vec<_>>();
         //检查论文(打印出来)
-        let _ = self
-            .reviewer
-            .iter()
-            .inspect(|item| item.inspector())
-            .collect::<Vec<_>>();
 
         println!(
-            "此学校名称:{}, 论文数量:{}, 评委数量:{}\n--------学校分界线--------",
+            "此学校名称:{}, 论文数量:{}, 评委是:{}\n--------学校分界线--------",
             self.name,
             self.paper.len(),
-            self.reviewer.len()
+            self.reviewer.0
         );
 
         //总结此学校
